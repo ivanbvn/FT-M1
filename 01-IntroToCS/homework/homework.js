@@ -9,12 +9,10 @@ function BinarioADecimal(num) {
 }
 
 function DecimalABinario(num) {
-   let result = num
    let binaryNumbers = []
-   while (result != 0) {
-      binaryNumbers.push(result % 2)
-      result = Math.floor(result / 2)
-      console.log(result)
+   while (num != 0) {
+      binaryNumbers.push(num % 2)
+      num = Math.floor(num / 2)
    }
    return binaryNumbers.reverse().join('')
 }

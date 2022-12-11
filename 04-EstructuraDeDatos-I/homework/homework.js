@@ -64,21 +64,21 @@ Implementar la clase Queue, sabiendo que es una estructura de tipo FIFO, donde e
 
 Pueden utilizar class o función constructora.
 */
-// function Queue(array = []) {
-//   this.array = [...array]
-// }
+function Queue(array = []) {
+  this.array = [...array]
+}
 
-// Queue.prototype.enqueue = function (elemento) {
-//   this.array.push(elemento)
-// }
+Queue.prototype.enqueue = function (elemento) {
+  this.array.push(elemento)
+}
 
-// Queue.prototype.dequeue = function () {
-//   return this.array.shift()
-// }
+Queue.prototype.dequeue = function () {
+  return this.array.shift()
+}
 
-// Queue.prototype.size = function () {
-//   return this.array.length
-// }
+Queue.prototype.size = function () {
+  return this.array.length
+}
 
 // // Con clases normales (ECMAscript 2015)
 // class Queue {

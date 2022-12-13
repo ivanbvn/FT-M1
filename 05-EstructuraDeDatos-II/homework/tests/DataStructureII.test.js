@@ -71,7 +71,6 @@ describe('Una linked list', function() {
     expect(linkedList.head).toBeFalsy();
   });
 
-
   it('deberia devolver los valores correctos para buscar', function() {
     linkedList.add('one');
     linkedList.add('two');

@@ -10,9 +10,104 @@ Implementar la clase LinkedList, definiendo los siguientes métodos:
   search(isEven), donde isEven es una función que retorna true cuando recibe por parámetro un número par, busca un nodo cuyo valor sea un número par.
   En caso de que la búsqueda no arroje resultados, search debe retornar null.
 */
-function LinkedList() {}
 
-function Node(value) {}
+function LinkedList() {
+  this.head = null
+  this.leng = 0
+}
+
+LinkedList.prototype.add = function (value) { // Agregar al final
+  let newNode = new Node(value)
+  let current = this.head
+
+  if (!current) {
+    this.head = newNode
+  } else {
+    while (current.next) {
+      current = current.next
+    }
+    current.next = newNode
+  }
+
+  this.leng++
+}
+
+LinkedList.prototype.addFirst = function (value) { // Agregar al principio
+  let newNode = new Node(value)
+  let current = this.head
+
+  if (!current) {
+    this.head = newNode
+  }
+
+  newNode.next = current
+  current = newNode
+  this.leng++
+}
+
+LinkedList.prototype.remove = function () { // Eliminar el ultimo
+  let deletedNode
+  let current = this.head
+
+  if (!current) return false
+  if (!current.next) {
+    deletedNode = current.value
+    this.leng--
+    this.head = null
+    return deletedNode
+  }
+
+  while (current.next.next) {
+    current = current.next
+  }
+  deletedNode = current.next.value
+  this.leng--
+  current.next = null
+  return deletedNode
+}
+
+LinkedList.prototype.removeFirst = function () { // Eliminar el primero
+  let deletedNode
+
+  if (!this.head) return false
+
+  deletedNode = this.head.value
+  this.head = this.head.next
+  this.leng--
+  return deletedNode
+}
+
+LinkedList.prototype.search = function (input) {
+  // let current = this.head
+  // if (typeof input === 'function') {
+  //   while (current) {
+  //     if (input(current.value)) return current.value
+  //     current = current.next
+  //   }
+  // } else {
+  //   while (current) {
+  //     if (current.value === input) return input
+  //     current = current.next
+  //   }
+  // }
+  // return null
+  let current = this.head
+
+  while (current) {
+    if (typeof input === 'function') {
+      if (input(current.value)) return current.value
+    }
+    if (current.value === input) return input
+    current = current.next
+  }
+
+  return null
+}
+
+function Node(value) {
+  this.value = value
+  this.next = null
+}
 
 /* EJERCICIO 2
 Implementar la clase HashTable.
@@ -27,13 +122,76 @@ La clase debe tener los siguientes métodos:
 
 Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero puedo chequear, con hasKey, si ya hay algo en la tabla con el nombre 'instructora'; luego, invocando set('instructora', 'Ani'), se almacenará el par clave-valor en un bucket específico (determinado al hashear la clave)
 */
-function HashTable() {}
+function HashTable(numBuckets = 35) {
+  this.table = []
+  this.numBuckets = numBuckets
+}
+
+HashTable.prototype.hash = function (key) {
+  let hash = 0
+
+  for (let i = 0; i < key.length; i++) {
+    hash += key.charCodeAt(i)
+  }
+
+  return hash % this.numBuckets
+}
+
+HashTable.prototype.set = function (key, value) {
+  if (typeof key !== 'string') throw new TypeError('Keys must be strings')
+
+  // let object = new Object()
+  // object[key] = value
+
+  // let hashKey = this.hash(key)
+
+  // if (!this.table[hashKey]) {
+  //   this.table[hashKey] = object
+  // } else {
+  //   this.table[hashKey] = { ...this.table[hashKey], ...object }
+  // }
+
+  // // Otra forma más facil
+
+  let hashKey = this.hash(key)
+  if (!this.table[hashKey]) {
+    this.table[hashKey] = {}
+  }
+  this.table[hashKey][key] = value
+}
+
+HashTable.prototype.get = function (key) {
+  // for (let i = 0; i < this.table.length; i++) {
+  //   if (this.table[i] && this.table[i].hasOwnProperty(key)) {
+  //     return this.table[i][key]
+  //   }
+  // }
+
+  // Otra forma más facil
+
+  let hashKey = this.hash(key)
+  return this.table[hashKey][key]
+}
+
+HashTable.prototype.hasKey = function (key) {
+  // for (let i = 0; i < this.table.length; i++) {
+  //   if (this.table[i] && this.table[i].hasOwnProperty(key)) {
+  //     return true
+  //   }
+  // }
+  // return false
+
+  // Otra forma más facil
+
+  let hashKey = this.hash(key)
+  return this.table[hashKey].hasOwnProperty(key)
+}
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
 
 module.exports = {
-   Node,
-   LinkedList,
-   HashTable,
+  Node,
+  LinkedList,
+  HashTable,
 };

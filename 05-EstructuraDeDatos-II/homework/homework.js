@@ -91,6 +91,9 @@ LinkedList.prototype.search = function (input) {
   //   }
   // }
   // return null
+
+  // Otra forma más facil
+
   let current = this.head
 
   while (current) {

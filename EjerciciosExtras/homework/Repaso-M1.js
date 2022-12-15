@@ -14,9 +14,17 @@ const {
 // Pista: utilizar el método Array.isArray() para determinar si algun elemento de array es un array anidado
 // [Para más información del método: https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Objetos_globales/Array/isArray]
 
-var countArray = function(array) {
+var countArray = function (array) {
     // Tu código aca:
-    
+    let result = 0
+    for (let i = 0; i < array.length; i++) {
+        if (Array.isArray(array[i])) {
+            result += countArray(array[i])
+        } else {
+            result += array[i]
+        }
+    }
+    return result
 }
 
 
@@ -37,11 +45,19 @@ var countArray = function(array) {
 // dentro de a tenemos 3 propiedades mas, luego a3 tiene otras 3 y por ultimo c tiene una extra.
 // Propiedades: a, a1, a2, a3, f, a, c, o, b, c --> 10 en total
 
-var countProps = function(obj) {
+var countProps = function (obj) {
     // Tu código aca:
-
+    let counter = 0
+    for (const key in obj) {
+        counter += 1
+        if (typeof obj[key] === 'object') {
+            if (!Array.isArray(obj[key])) {
+                counter += countProps(obj[key])
+            }
+        }
+    }
+    return counter
 }
-
 
 // Implementar el método changeNotNumbers dentro del prototype de LinkedList que deberá cambiar
 // aquellos valores que no puedan castearse a numeros por 'Kiricocho' y devolver la cantidad de cambios que hizo
@@ -51,9 +67,23 @@ var countProps = function(obj) {
 //    lista.changeNotNumbers();
 //    Ahora la lista quedaría: Head --> [1] --> ['2'] --> [false] --> ['Kirikocho] y la función debería haber devuelto el valor 1
 
-LinkedList.prototype.changeNotNumbers = function(){
+LinkedList.prototype.changeNotNumbers = function () {
     // Tu código aca:
+    let changes = 0
+    let current = this.head
+    while (current) {
+        if (!isNumber(current.value)) {
+            current.value = 'Kiricocho'
+            changes++
+        }
+        current = current.next
+    }
+    return changes
+}
 
+function isNumber(valor) {
+    if (Number(valor) >= 0) return true
+    return false
 }
 
 
@@ -65,11 +95,17 @@ LinkedList.prototype.changeNotNumbers = function(){
 // mergeQueues(queueOne, queueTwo) --> [7,2,3,4,5,6]
 // IMPORTANTE: NO son arreglos sino que son Queues.
 
-var mergeQueues = function(queueOne, queueTwo) {
+var mergeQueues = function (queueOne, queueTwo) {
     // Tu código aca:
+    let queueThree = new Queue()
 
+    while (queueOne.size() > 0 || queueTwo.size() > 0) {
+        if (queueOne.size() > 0) queueThree.enqueue(queueOne.dequeue())
+        if (queueTwo.size() > 0) queueThree.enqueue(queueTwo.dequeue())
+    }
+
+    return queueThree
 }
-
 
 // Implementar la funcion closureMult que permita generar nuevas funciones que representen
 // las tablas de multiplicación de distintos numeros
@@ -80,16 +116,23 @@ var mergeQueues = function(queueOne, queueTwo) {
 // - var multBySix = closureMult(6);
 // - multBySix(4) --> 24
 
-var closureMult = function(multiplier) {
+var closureMult = function (multiplier) {
     // Tu código aca:
-
+    return function (numero) {
+        return result = multiplier * numero
+    }
 }
 
 // Implementar el método sum dentro del prototype de BinarySearchTree
 // que debe retornar la suma total de los valores dentro de cada nodo del arbol
-BinarySearchTree.prototype.sum = function() {
+BinarySearchTree.prototype.sum = function () {
     // Tu código aca:
-
+    let suma = 0
+    if (this.value) suma += this.value
+    if (!this.left && !this.right) return suma
+    if (!this.left) return suma + this.right.sum()
+    if (!this.right) return suma + this.left.sum()
+    return suma + this.left.sum() + this.right.sum()
 }
 
 module.exports = {
